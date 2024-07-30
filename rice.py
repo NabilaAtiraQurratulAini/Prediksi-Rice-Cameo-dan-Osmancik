@@ -33,6 +33,8 @@ with data_understanding:
 
     st.write("### Pemahaman Data")
     st.write("Dataset terdiri dari 3810 gambar butiran beras untuk spesies Osmancik dan Cammeo. Karakteristik umum spesies Osmancik mencakup penampilan yang lebar, panjang, mengkilap, dan kusam, sementara spesies Cammeo memiliki ciri serupa dengan penampilan yang lebar dan panjang, serta kecenderungan mengkilap dan kusam. Terdapat 7 fitur morfologis untuk setiap butir beras, yaitu luas, keliling, panjang sumbu utama, panjang sumbu minor, eksentrisitas, luas cembung, dan konveksitas. Data ini dikategorikan menjadi satu fitur kelas yang menyimpan informasi tentang spesies butir beras. Fitur-fitur tersebut diekstraksi dari gambar yang diperoleh melalui serangkaian langkah pengolahan gambar.")
+    
+    st.write("### Fitur-fitur")
     st.write("- Area atau Daerah : Fitur ini mengukur luas dari objek. Luas dapat dihitung dalam unit piksel atau unit luas lainnya, tergantung pada resolusi data. Luas memberikan informasi tentang ukuran relatif objek. Data yang terkait dengan fitur ini memiliki tipe data numerik.")
     st.write("- Perimeter : Perimeter mengukur panjang garis batas objek. Ini diukur sebagai jumlah panjang semua tepi objek. Perimeter bisa memberikan indikasi seberapa kompleks bentuk objek tersebut. Data yang terkait dengan fitur ini memiliki tipe data numerik.")
     st.write("- Major Axis Length atau Panjang Sumbu Utama : Sumbu utama adalah sumbu terpanjang dalam elips yang mengelilingi objek. Panjang sumbu ini memberikan gambaran tentang dimensi utama objek dan arah orientasi elips. Data yang terkait dengan fitur ini memiliki tipe data numerik.")
