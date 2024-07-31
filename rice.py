@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from scipy.stats import zscore
 from sklearn.svm import SVC
 
-st.title("""PREDIKSI DATA PADI : CAMEO AND OSMANCIK""")
+st.title("""PREDIKSI PADI CAMEO AND OSMANCIK""")
 st.write("Nabila Atira Qurratul Aini")
 
 tabs = st.tabs(["Business Understanding", "Data Understanding", "Data Preprocessing", "Modeling", "Deployment", "Informasi"])
@@ -238,7 +238,7 @@ with modeling:
 
 
 with deployment:
-    st.write("### APLIKASI PREDIKSI JENIS PADI")
+    st.write("# APLIKASI PREDIKSI JENIS PADI")
 
     AREA = st.number_input("Masukkan Nilai Area : ")
     PERIMETER = st.number_input("Masukkan Nilai Perimeter : ")
