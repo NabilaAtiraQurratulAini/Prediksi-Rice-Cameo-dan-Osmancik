@@ -33,8 +33,6 @@ with data_understanding:
 
     st.write("### Pemahaman Data")
     st.write("Dataset terdiri dari 3810 gambar butiran beras untuk spesies Osmancik dan Cammeo. Karakteristik umum spesies Osmancik mencakup penampilan yang lebar, panjang, mengkilap, dan kusam, sementara spesies Cammeo memiliki ciri serupa dengan penampilan yang lebar dan panjang, serta kecenderungan mengkilap dan kusam. Terdapat 7 fitur morfologis untuk setiap butir beras, yaitu luas, keliling, panjang sumbu utama, panjang sumbu minor, eksentrisitas, luas cembung, dan konveksitas. Data ini dikategorikan menjadi satu fitur kelas yang menyimpan informasi tentang spesies butir beras. Fitur-fitur tersebut diekstraksi dari gambar yang diperoleh melalui serangkaian langkah pengolahan gambar.")
-    
-    st.write("### Fitur-fitur")
     st.write("- Area atau Daerah : Fitur ini mengukur luas dari objek. Luas dapat dihitung dalam unit piksel atau unit luas lainnya, tergantung pada resolusi data. Luas memberikan informasi tentang ukuran relatif objek. Data yang terkait dengan fitur ini memiliki tipe data numerik.")
     st.write("- Perimeter : Perimeter mengukur panjang garis batas objek. Ini diukur sebagai jumlah panjang semua tepi objek. Perimeter bisa memberikan indikasi seberapa kompleks bentuk objek tersebut. Data yang terkait dengan fitur ini memiliki tipe data numerik.")
     st.write("- Major Axis Length atau Panjang Sumbu Utama : Sumbu utama adalah sumbu terpanjang dalam elips yang mengelilingi objek. Panjang sumbu ini memberikan gambaran tentang dimensi utama objek dan arah orientasi elips. Data yang terkait dengan fitur ini memiliki tipe data numerik.")
@@ -52,31 +50,6 @@ with data_understanding:
     informasi_df = pd.DataFrame({'Column': df.columns, 'Non-Null Count': [df[col].notnull().sum() for col in df.columns], 'Dtype': [df[col].dtype for col in df.columns]})
     st.dataframe(informasi_df)
 
-    st.write("### Statistik Deskriptif")
-    deskripsi_df = df.describe()
-    st.dataframe(deskripsi_df)
-
-    st.write("### Korelasi Matriks")
-    kolerasi = df[['AREA', 'PERIMETER', 'MAJORAXIS', 'MINORAXIS', 'ECCENTRICITY', 'CONVEX_AREA', 'EXTENT']]
-    correlation_matrix = kolerasi.corr()
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1)
-    plt.title('Correlation Matrix')
-    st.pyplot(plt)
-
-    st.write("### Diagram Batang")
-    class_counts = df['CLASS'].value_counts()
-    plt.figure(figsize=(8, 6))
-    class_counts.plot(kind='bar', color='skyblue')
-    plt.xlabel('Class')
-    plt.ylabel('Frequency')
-    plt.title('Frequency of Class Variable')
-    st.pyplot(plt)
-
-    class_counts = df['CLASS'].value_counts().reset_index()
-    class_counts.columns = ['Class', 'Frequency']
-    st.dataframe(class_counts)
-
 with data_preprocessing:
     st.write("# DATA PREPROCESSING")
 
@@ -87,7 +60,7 @@ with data_preprocessing:
 
     st.write("### Data Duplikat")
     num_duplicates = df.duplicated().sum()
-    st.write('Jumlah Baris Duplikat :', num_duplicates)
+    st.write('Jumlah baris duplikat :', num_duplicates)
 
     st.write("### Blox Plot")
     fig, axs = plt.subplots(1, 7, figsize=(20, 6))
@@ -107,8 +80,8 @@ with data_preprocessing:
     outliers = (z_scores > threshold).any(axis=1)
     jumlah_outlier = outliers.sum()
     jumlah_tanpa_outlier = len(df) - jumlah_outlier
-    st.write("Jumlah Outlier :", jumlah_outlier)
-    st.write("Jumlah Data Tanpa Outlier :", jumlah_tanpa_outlier)
+    st.write("Jumlah outlier :", jumlah_outlier)
+    st.write("Jumlah data tanpa outlier :", jumlah_tanpa_outlier)
 
     st.write("### Data Bersih")
     data = df[~outliers]
@@ -124,10 +97,23 @@ with data_preprocessing:
     fig.suptitle('Boxplots of Features')
     st.pyplot(fig)
 
+    st.write("### Statistik Deskriptif")
+    deskripsi_df = df.describe()
+    st.dataframe(deskripsi_df)
+
+    st.write("### Diagram Batang")
+    class_counts = df['CLASS'].value_counts()
+    plt.figure(figsize=(8, 6))
+    class_counts.plot(kind='bar', color='skyblue')
+    plt.xlabel('Class')
+    plt.ylabel('Frequency')
+    plt.title('Frequency of Class Variable')
+    st.pyplot(plt)
+
     st.write("### Encoding")
     data['CLASS'].replace('Cammeo', 0,inplace=True)
     data['CLASS'].replace('Osmancik', 1,inplace=True)
-    st.write("DataFrame Setelah Binary Encoding :")
+    st.write("DataFrame setelah binary encoding :")
     st.dataframe(data)
 
     st.write("### Korelasi Matriks")
@@ -166,14 +152,19 @@ with data_preprocessing:
     data.loc[:, fitur] = scaler.fit_transform(data[fitur])
     data
 
+    st.write("### Label Data CLASS")
+    class_counts = df['CLASS'].value_counts().reset_index()
+    class_counts.columns = ['Class', 'Frequency']
+    st.dataframe(class_counts)
+
     st.write("### Split Data")
     X = data.drop(columns=['CLASS'])
     y = data['CLASS']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     train_size = X_train.shape[0]
-    st.write('Jumlah Data Train :', train_size)
+    st.write('Jumlah data train :', train_size)
     test_size = X_test.shape[0]
-    st.write('Jumlah Data Test :', test_size)
+    st.write('Jumlah data test :', test_size)
 
 
 with modeling:
@@ -211,11 +202,9 @@ with modeling:
     
     svm_model = SVC(C=1.0, kernel='rbf', gamma='scale', probability=True, random_state=42)
     svm_model.fit(X_train, y_train)
-
     y_pred_svm = svm_model.predict(X_test)
-    accuracy_svm = accuracy_score(y_test, y_pred_svm)
 
-    st.write("### Matriks")
+    st.write("### Matriks Evaluasi")
     accuracy_svm = accuracy_score(y_test, y_pred_svm)
     precision_svm = precision_score(y_test, y_pred_svm)
     recall_svm = recall_score(y_test, y_pred_svm)
@@ -238,7 +227,7 @@ with modeling:
 
 
 with deployment:
-    st.write("# APLIKASI PREDIKSI JENIS PADI")
+    st.write("### APLIKASI PREDIKSI JENIS PADI")
 
     AREA = st.number_input("Masukkan Nilai Area : ")
     PERIMETER = st.number_input("Masukkan Nilai Perimeter : ")
@@ -248,18 +237,10 @@ with deployment:
     CONVEX_AREA = st.number_input("Masukkan Nilai Convex Area : ")
     EXTENT = st.number_input("Masukkan Nilai Extent : ")
 
-    # tombol untuk membuat prediksi
     if st.button("Prediksi"):
-        # membuat array dengan data input
         new_data = np.array([[AREA, PERIMETER, MAJORAXIS, MINORAXIS, ECCENTRICITY, CONVEX_AREA, EXTENT]])
-
-        # normalisasi data input menggunakan scaler yang disimpan
         new_data = scaler.transform(new_data)
-
-        # melakukan prediksi menggunakan model SVM
         prediction = svm_model.predict(new_data)
-
-        # menampilkan hasil prediksi
         if prediction[0] == 1:
             st.write("Hasil Prediksi : Beras Osmancik")
         else:
