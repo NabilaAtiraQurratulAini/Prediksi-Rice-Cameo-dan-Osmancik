@@ -227,7 +227,7 @@ with modeling:
 
 
 with deployment:
-    st.write("### APLIKASI PREDIKSI JENIS PADI")
+    st.write("# APLIKASI PREDIKSI JENIS PADI")
 
     AREA = st.number_input("Masukkan Nilai Area : ")
     PERIMETER = st.number_input("Masukkan Nilai Perimeter : ")
